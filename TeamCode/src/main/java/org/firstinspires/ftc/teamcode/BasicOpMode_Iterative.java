@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -56,8 +57,10 @@ public class BasicOpMode_Iterative extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
+    private DcMotor frontLeft = null;
+    private DcMotor frontRight = null;
+    private DcMotor backLeft = null;
+    private DcMotor backRight = null;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -69,13 +72,17 @@ public class BasicOpMode_Iterative extends OpMode
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        frontLeft  = hardwareMap.get(DcMotor.class, "front_left");
+        frontRight = hardwareMap.get(DcMotor.class, "front_right");
+        backLeft = hardwareMap.get(DcMotor.class, "back_left");
+        backRight = hardwareMap.get(DcMotor.class, "back_right");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        frontLeft.setDirection(DcMotor.Direction.FORWARD);
+        frontRight.setDirection(DcMotor.Direction.REVERSE);
+        backLeft.setDirection(DcMotor.Direction.FORWARD);
+        backRight.setDirection(DcMotor.Direction.REVERSE);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -105,6 +112,7 @@ public class BasicOpMode_Iterative extends OpMode
         double leftPower;
         double rightPower;
 
+
         // Choose to drive using either Tank Mode, or POV Mode
         // Comment out the method that's not used.  The default below is POV.
 
@@ -121,8 +129,10 @@ public class BasicOpMode_Iterative extends OpMode
         // rightPower = -gamepad1.right_stick_y ;
 
         // Send calculated power to wheels
-        leftDrive.setPower(leftPower);
-        rightDrive.setPower(rightPower);
+        frontLeft.setPower(leftPower);
+        frontRight.setPower(rightPower);
+        backLeft.setPower(leftPower);
+        backRight.setPower(rightPower);
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
